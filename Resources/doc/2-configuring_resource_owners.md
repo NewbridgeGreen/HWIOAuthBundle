@@ -28,6 +28,8 @@ hwi_oauth:
 - [Twitter] (2x-twitter.md)
 - [Vkontakte](2x-vkontakte.md)
 - [Windows Live](2x-windows_live.md)
+- [Dropbox](2x-dropbox.md)
+- [Xero](2x-xero.md)
 - [Others](2x-others.md)
 
 ### Continue to the next step!
