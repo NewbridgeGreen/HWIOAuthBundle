@@ -21,10 +21,6 @@ use Symfony\Component\HttpFoundation\Request;
 class XeroResourceOwner extends GenericOAuth1ResourceOwner
 {
 
-    protected $oauthSettings = array(
-        'oauth_signature_method' => 'PLAINTEXT'
-    );
-
     /**
      * {@inheritDoc}
      */
@@ -32,7 +28,7 @@ class XeroResourceOwner extends GenericOAuth1ResourceOwner
         'authorization_url'   => 'https://api.xero.com/oauth/Authorize',
         'request_token_url'   => 'https://api.xero.com/oauth/RequestToken',
         'access_token_url'    => 'https://api.xero.com/oauth/AccessToken',
-        'infos_url'           => 'https://api.xero.com/api.xro/2.0/Users',
+        'infos_url'           => 'https://api.xero.com/api.xro/2.0/Organisation',
         'user_response_class' => '\HWI\Bundle\OAuthBundle\OAuth\Response\PathUserResponse',
         'realm'               => '',
     );
@@ -41,24 +37,16 @@ class XeroResourceOwner extends GenericOAuth1ResourceOwner
      * {@inheritDoc}
      */
     protected $paths = array(
-        'identifier' => 'uid',
-        'nickname'   => 'email',
-        'realname'   => 'display_name',
+        'identifier' => 'Id',
+        'nickname'   => 'Status',
+        'realname'   => 'ProviderName',
     );
 
-    public function getUserInformation($accessToken, array $extraParameters = array())
+    /**
+     * {@inheritDoc}
+     */
+    protected function doGetUserInformationRequest($url, array $parameters = array())
     {
-
-        return parent::getUserInformation($accessToken, array_merge($extraParameters, $this->oauthSettings));
-    }
-
-    public function getAccessToken(Request $request, $redirectUri, array $extraParameters = array())
-    {
-        return parent::getAccessToken($request, $redirectUri, array_merge($extraParameters, $this->oauthSettings));
-    }
-
-    protected function getRequestToken($redirectUri, array $extraParameters = array())
-    {
-        return parent::getRequestToken($redirectUri, array_merge($extraParameters, $this->oauthSettings));
+        return $this->httpRequest($url, null, $parameters, array('Accept: application/json'), 'GET');
     }
 }
